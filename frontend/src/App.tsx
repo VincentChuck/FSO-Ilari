@@ -29,8 +29,8 @@ function App() {
   const [diaries, setDiaries] = useState<DiaryEntry[]>([]);
 
   const [newDate, dateReset] = useField("date");
-  const [newWeather, weatherReset] = useField("weather");
-  const [newVisibility, visibilityReset] = useField("visibility");
+  const [newWeather, setNewWeather] = useState("");
+  const [newVisibility, setNewVisibility] = useState("");
   const [newComment, commentReset] = useField("comment");
   const [notification, setNotification] = useState("");
 
@@ -47,8 +47,8 @@ function App() {
     event.preventDefault();
     const diaryToAdd: NewDiaryEntry = {
       date: newDate.value,
-      weather: newWeather.value as Weather,
-      visibility: newVisibility.value as Visibility,
+      weather: newWeather as Weather,
+      visibility: newVisibility as Visibility,
       comment: newComment.value,
     };
     createDiary(diaryToAdd)
@@ -56,8 +56,8 @@ function App() {
         if (checkDiaryResponse(res)) {
           setDiaries(diaries.concat(res));
           dateReset();
-          visibilityReset();
-          weatherReset();
+          setNewWeather("sunny");
+          setNewVisibility("great");
           commentReset();
         } else {
           notify(res);
@@ -79,9 +79,76 @@ function App() {
         <p style={{ color: "rgb(220, 38, 38)" }}>{notification}</p>
       )}
       <form onSubmit={diaryCreation}>
-        <input {...newDate} /> <br />
-        <input {...newWeather} /> <br />
-        <input {...newVisibility} /> <br />
+        <input type="date" {...newDate} /> <br />
+        <strong>weather</strong>
+        <input
+          type="radio"
+          name="weather"
+          value="sunny"
+          defaultChecked
+          onChange={() => setNewWeather("sunny")}
+        />
+        sunny
+        <input
+          type="radio"
+          name="weather"
+          value="rainy"
+          onChange={() => setNewWeather("rainy")}
+        />
+        rainy
+        <input
+          type="radio"
+          name="weather"
+          value="cloudy"
+          onChange={() => setNewWeather("cloudy")}
+        />
+        cloudy
+        <input
+          type="radio"
+          name="weather"
+          value="stormy"
+          onChange={() => setNewWeather("stormy")}
+        />
+        stormy
+        <input
+          type="radio"
+          name="weather"
+          value="windy"
+          onChange={() => setNewWeather("windy")}
+        />
+        windy
+        <br />
+        <strong>visibility</strong>
+        <input
+          type="radio"
+          name="visibility"
+          value="great"
+          defaultChecked
+          onChange={() => setNewVisibility("great")}
+        />
+        great
+        <input
+          type="radio"
+          name="visibility"
+          value="good"
+          onChange={() => setNewVisibility("good")}
+        />
+        good
+        <input
+          type="radio"
+          name="visibility"
+          value="ok"
+          onChange={() => setNewVisibility("ok")}
+        />
+        ok
+        <input
+          type="radio"
+          name="visibility"
+          value="poor"
+          onChange={() => setNewVisibility("poor")}
+        />
+        poor
+        <br />
         <input {...newComment} /> <br />
         <button type="submit">add</button>
       </form>
